@@ -1,0 +1,2 @@
+1eda0512618e152d859dc12befcd84b370fec1f19a88ffa2497631622d122986  sour_0.2.5_darwin_arm64.tar.gz
+18efcf8cf73e66ade20eacdb8e6649c29de6722a6141fba094fffae46b3bc836  sour_0.2.5_linux_amd64.tar.gz

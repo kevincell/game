@@ -1,0 +1,13 @@
+services:
+  sour:
+    image: sour-lan:0.2.5
+    container_name: sour-lan
+    network_mode: host
+    restart: unless-stopped
+    pull_policy: never
+    volumes:
+      - sour-cache:/data/cache
+    stop_grace_period: 20s
+
+volumes:
+  sour-cache:

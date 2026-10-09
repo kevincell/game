@@ -1,0 +1,64 @@
+server:
+  cacheDirectory: /data/cache
+  serverInfo:
+    map: Sour LAN
+    description: Campus LAN
+    timeLeft: 3600
+    gameSpeed: 100
+  banners:
+    - "Campus LAN: create a private lobby and share its 5-character code."
+  bannerInterval: 120
+  serverDescription: "Sour LAN [#id]"
+  presets:
+    - name: ffa
+      default: true
+      config:
+        maxClients: 16
+        matchLength: 600
+        defaultGameSpeed: 100
+        defaultMode: ffa
+        defaultMap: complex
+        maps:
+          - complex
+          - dust2
+          - turbine
+    - name: insta
+      config:
+        maxClients: 16
+        matchLength: 600
+        defaultGameSpeed: 100
+        defaultMode: insta
+        defaultMap: turbine
+        maps:
+          - turbine
+          - complex
+          - dust2
+  ingress:
+    web:
+      address: 0.0.0.0
+      port: 1337
+    desktop:
+      - port: 28785
+        target: lobby
+        serverInfo:
+          enabled: false
+          master: false
+          server: false
+  matchmaking:
+    duel: []
+  spaces:
+    - preset: ffa
+      config:
+        alias: lobby
+        description: Public free-for-all
+    - preset: insta
+      config:
+        alias: insta
+        description: Public instagib
+
+client:
+  assets: []
+  servers:
+    - "#host/ws/"
+  proxy: "#host/service/proxy/"
+  menuOptions: 'guibutton "join public FFA" "join"'

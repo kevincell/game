@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+path="$1"
+shift 1
+
+cd "$path"
+
+run_build() {
+  "$path/build"
+}
+
+run_build
+
+job_id=""
+
+repl() {
+  if ! [ -z "$job_id" ]; then
+    kill -SIGINT "$job_id"
+    wait "$job_id"
+    sleep 1
+    job_id=""
+  fi
+
+  if ! run_build; then
+    echo "Building $path failed."
+    return 1
+  fi
+
+  if [ -z "$CONFIG" ]; then
+    export SOUR_CONFIG="$(cat $SCRIPT_DIR/config/config.json)"
+  fi
+  $@ &
+  result="$?"
+  job_id="$!"
+  echo "Ran service with pid=$job_id"
+  if [ "$result" -gt 0 ]; then
+    echo "Running $path failed."
+    job_id=""
+    return 1
+  fi
+  return 0
+}
+
+paths="$path"
+
+if [ -z "$CONFIG" ]; then
+  paths+=" $SCRIPT_DIR/config/config.json"
+fi
+
+repl $@
+
+while true; do
+  inotifywait -qr $paths -e MODIFY
+  repl $@
+done

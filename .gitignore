@@ -1,0 +1,13 @@
+/appendonlydir
+build/**
+*CMakeFiles*
+earthly/**
+**.o.tmp
+/dump.rdb
+/state.db
+/sour
+/sourdump
+/sour-build
+/dist/
+/client/node_modules/
+/client/build/

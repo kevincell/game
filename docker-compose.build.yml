@@ -1,0 +1,4 @@
+services:
+  sour:
+    image: sour-lan:0.2.5
+    build: .

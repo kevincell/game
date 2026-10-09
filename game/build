@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd "$SCRIPT_DIR/../"
+
+set -e
+
+cd "$SCRIPT_DIR/src"
+
+# When you restart the container, this is not there
+if ! [ -f "$EMSDK/upstream/emscripten/cache/ports/zlib.2.11.zip" ]; then
+  emmake make clean
+fi
+
+emmake make client -j8
+cd "$SCRIPT_DIR"
+
+OUTPUT_DIR=${GAME_OUTPUT_DIR:-dist/game}
+mkdir -p "$OUTPUT_DIR"
+# Need to get rid of some unseemly behavior
+patch sauerbraten.js file_create.patch
+patch sauerbraten.js arbitrary_ws.patch
+patch sauerbraten.js resolve_wasm.patch
+cp -r js/api.js sauerbraten.* "$OUTPUT_DIR"
